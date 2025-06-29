@@ -112,7 +112,7 @@ class CrispyNeuroBrutaListFieldNode(template.Node):
         "appearance-none rounded-lg py-2 focus:outline-none mr-2",
         "splithiddendatetime": "",
         "selectdate": "",
-        "error_border": "border-red-500",
+        "error_border": "bg-red-100 border-red-500 border-2",
     }
 
     default_container = CSSContainer(default_styles)
