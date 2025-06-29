@@ -1,0 +1,16 @@
+{% if form.non_field_errors %}
+    <div class="flex items-center p-4 bg-red-300 border-2 border-black rounded-lg neo-shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24"
+             stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span class="font-bold">Erro:</span>
+        {% if form_error_title %}
+            <span class="ml-2">{{ form_error_title }}</span>
+        {% endif %}
+        <ul>
+            {{ form.non_field_errors|unordered_list }}
+        </ul>
+    </div>
+{% endif %}

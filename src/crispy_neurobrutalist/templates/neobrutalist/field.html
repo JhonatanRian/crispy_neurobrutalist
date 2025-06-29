@@ -1,0 +1,33 @@
+{% load neo_field %}
+
+{% if field.is_hidden %}
+    {{ field }}
+{% else %}
+    <div class="mb-6">
+        <{% if tag %}{{ tag }}{% else %}div{% endif %} id="div_{{ field.auto_id }}" class="
+                {% if wrapper_class %}{{ wrapper_class }} {% endif %}{% if field_class %}{{ field_class }}{% else %}mb-3{% endif %}">
+
+            {% if field.label and form_show_labels and not field|is_checkbox%}
+                <label for="{{ field.id_for_label }}"
+                       class="block font-bold text-sm mb-2 {% if field.errors %} text-red-600 {% endif %}">
+                    {{ field.label|safe }}{% if field.field.required %}<span class="asteriskField text-red-600">*</span>{% endif %}
+                </label>
+            {% endif %}
+
+            {% if field|is_checkbox %}
+                {% include "neobrutalist/layout/checkbox.html" %}
+            {% elif field|is_clearable_file %}
+                {% include 'neobrutalist/layout/clearablefileinput.html' %}
+            {% elif field|is_select %}
+                {% include 'neobrutalist/layout/select.html' %}
+            {% elif field|is_radioselect %}
+                {% include 'neobrutalist/layout/radioselect.html' %}
+            {% else %}
+                {% neo_field field  %}
+            {% endif %}
+
+            {% include 'neobrutalist/layout/help_text_and_errors.html' %}
+
+        </{% if tag %}{{ tag }}{% else %}div{% endif %}>
+    </div>
+{% endif %}

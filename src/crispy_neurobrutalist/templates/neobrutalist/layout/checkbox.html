@@ -1,0 +1,10 @@
+{% load crispy_forms_field %}
+
+<div class="flex items-center gap-2 mb-4">
+    <input type="checkbox" name="{{ field.name }}" {% if field.value %}checked{% endif %}
+           class="w-5 h-5 border-2 border-black rounded-md appearance-none custom-checkbox" {{ field.flat_attrs|safe }}>
+    {% if field.label and form_show_labels %}
+        <label for="{{ field.id_for_label }}"
+               class="flex items-center gap-2 font-semibold cursor-pointer text-sm">{{ field.label }}</label>
+    {% endif %}
+</div>

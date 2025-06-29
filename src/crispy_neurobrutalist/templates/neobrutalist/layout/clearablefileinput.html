@@ -1,0 +1,15 @@
+{% load i18n neo_field %}
+
+<div class="flex flex-col">
+    {% if field.is_initial %}
+        <div class="mb-2">
+            <span class="font-semibold text-sm">{% trans "Currently:" %}</span>
+            <a href="{{ field.url }}" target="_blank" class="text-blue-600 hover:underline">{{ field.filename }}</a>
+        </div>
+        <div class="flex items-center gap-2 mb-2">
+            <input type="checkbox" name="{{ field.field.widget.clear_checkbox_name }}" id="{{ field.field.widget.clear_checkbox_id }}" class="w-5 h-5 border-2 border-black rounded-md appearance-none custom-checkbox">
+            <label for="{{ field.field.widget.clear_checkbox_id }}" class="font-semibold cursor-pointer text-sm">{% trans "Clear" %}</label>
+        </div>
+    {% endif %}
+    {% neo_field field %}
+</div>

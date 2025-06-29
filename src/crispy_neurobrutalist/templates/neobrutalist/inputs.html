@@ -1,0 +1,7 @@
+{% if inputs %}
+    <div class="{% if 'form-horizontal' in form_class %} row{% endif %}">
+        {% for input in inputs %}
+            {% include "neobrutalist/layout/baseinput.html" %}
+        {% endfor %}
+    </div>
+{% endif %}
