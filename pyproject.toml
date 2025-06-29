@@ -12,9 +12,6 @@ dependencies = [
     "django-crispy-forms>=2.4",
 ]
 
-[project.scripts]
-crispy-neurobrutalist = "crispy_neurobrutalist:main"
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

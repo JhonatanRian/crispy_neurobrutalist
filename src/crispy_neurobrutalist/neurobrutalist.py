@@ -1,3 +1,6 @@
+import re
+
+
 class CSSContainer:
     def __init__(self, css_styles):
         default_items = [
