@@ -146,15 +146,18 @@ django_settings_module = "tests.settings"
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "tests.settings"
-python_files = ["test_*.py", "*_test.py"]
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
 testpaths = ["tests"]
+pythonpath = ["."]
 addopts = [
-    "--verbose",
     "--strict-markers",
-    "--cov=crispy_neurobrutalist",
+    "--tb=short",
+    "--reuse-db",
+    "--cov=src/crispy_neurobrutalist",
     "--cov-report=term-missing",
     "--cov-report=html",
-    "--cov-report=xml",
 ]
 
 [tool.coverage.run]
@@ -174,4 +177,9 @@ exclude_lines = [
     "if __name__ == .__main__.:",
     "if TYPE_CHECKING:",
     "@abstractmethod",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.1",
 ]

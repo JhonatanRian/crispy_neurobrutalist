@@ -318,15 +318,89 @@ your_project/
                 checkbox.html   # Override checkbox template
 ```
 
-## 🤝 Contributing
+## � Development & Testing
+
+This project uses **uv** for dependency management and **pytest** for testing.
+
+### Setting Up Development Environment
+
+```bash
+# Clone the repository
+git clone https://github.com/JhonatanRian/crispy_neurobrutalist.git
+cd crispy_neurobrutalist
+
+# Install dependencies with uv
+uv pip install -e ".[dev]"
+```
+
+### Running Tests
+
+```bash
+# Run all tests
+uv run pytest
+
+# Run with coverage report
+uv run pytest --cov=src/crispy_neurobrutalist --cov-report=term-missing
+
+# Run specific test file
+uv run pytest tests/test_layout.py -v
+
+# Run specific test
+uv run pytest tests/test_layout.py::TestSubmit::test_submit_default_styling -v
+```
+
+### Test Coverage
+
+The project maintains **96% code coverage** with **65 unit tests**:
+
+- `test_neurobrutalist.py` - 20 tests for CSSContainer class
+- `test_layout.py` - 45 tests for layout components (Submit, Button, Reset, Alert, Card, etc.)
+
+```
+Name                            Stmts   Miss  Cover
+----------------------------------------------------
+layout.py                          49      0   100%
+neurobrutalist.py                  36      0   100%
+__init__.py                         7      0   100%
+----------------------------------------------------
+TOTAL                             106      4    96%
+```
+
+### Code Quality Tools
+
+```bash
+# Format code with black
+uv run black src/ tests/
+
+# Lint with ruff
+uv run ruff check src/ tests/
+
+# Type checking with mypy
+uv run mypy src/
+```
+
+## �🤝 Contributing
 
 Contributions are welcome! However, please note this project is under a non-commercial license.
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+### Contribution Guidelines
+
+1. **Fork the repository**
+2. **Create a feature branch** (`git checkout -b feature/amazing-feature`)
+3. **Make your changes**
+   - Follow existing code style (black formatting, line length 100)
+   - Add tests for new features
+   - Ensure all tests pass: `uv run pytest`
+4. **Commit your changes** (`git commit -m 'Add amazing feature'`)
+5. **Push to the branch** (`git push origin feature/amazing-feature`)
+6. **Open a Pull Request**
+
+### Development Requirements
+
+- Python 3.12+
+- uv (for dependency management)
+- Django 4.2+
+- django-crispy-forms 2.4+
 
 ## 📝 License
 
