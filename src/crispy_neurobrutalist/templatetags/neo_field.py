@@ -56,6 +56,48 @@ def is_multivalue(field):
 
 
 @register.filter
+def is_dateinput(field):
+    """Check if field is a DateInput widget."""
+    return isinstance(field.field.widget, forms.DateInput)
+
+
+@register.filter
+def is_datetimeinput(field):
+    """Check if field is a DateTimeInput widget."""
+    return isinstance(field.field.widget, forms.DateTimeInput)
+
+
+@register.filter
+def is_timeinput(field):
+    """Check if field is a TimeInput widget."""
+    return isinstance(field.field.widget, forms.TimeInput)
+
+
+@register.filter
+def is_numberinput(field):
+    """Check if field is a NumberInput widget."""
+    return isinstance(field.field.widget, forms.NumberInput)
+
+
+@register.filter
+def is_emailinput(field):
+    """Check if field is an EmailInput widget."""
+    return isinstance(field.field.widget, forms.EmailInput)
+
+
+@register.filter
+def is_urlinput(field):
+    """Check if field is a URLInput widget."""
+    return isinstance(field.field.widget, forms.URLInput)
+
+
+@register.filter
+def is_textarea(field):
+    """Check if field is a Textarea widget."""
+    return isinstance(field.field.widget, forms.Textarea)
+
+
+@register.filter
 def classes(field):
     """
     Returns CSS classes of a field

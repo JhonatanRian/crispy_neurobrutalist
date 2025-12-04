@@ -18,10 +18,32 @@
                 {% include "neobrutalist/layout/checkbox.html" %}
             {% elif field|is_clearable_file %}
                 {% include 'neobrutalist/layout/clearablefileinput.html' %}
-            {% elif field|is_select %}
-                {% include 'neobrutalist/layout/select.html' %}
+            {% elif field|is_file %}
+                {% include 'neobrutalist/layout/fileinput.html' %}
+            {% elif field|is_checkboxselectmultiple %}
+                {% include 'neobrutalist/layout/checkboxselectmultiple.html' %}
             {% elif field|is_radioselect %}
                 {% include 'neobrutalist/layout/radioselect.html' %}
+            {% elif field|is_multiselect %}
+                {% include 'neobrutalist/layout/multiselect.html' %}
+            {% elif field|is_select %}
+                {% include 'neobrutalist/layout/select.html' %}
+            {% elif field|is_textarea %}
+                {% include 'neobrutalist/layout/textarea.html' %}
+            {% elif field|is_dateinput %}
+                {% include 'neobrutalist/layout/dateinput.html' %}
+            {% elif field|is_datetimeinput %}
+                {% include 'neobrutalist/layout/datetimeinput.html' %}
+            {% elif field|is_timeinput %}
+                {% include 'neobrutalist/layout/timeinput.html' %}
+            {% elif field|is_numberinput %}
+                {% include 'neobrutalist/layout/numberinput.html' %}
+            {% elif field|is_emailinput %}
+                {% include 'neobrutalist/layout/emailinput.html' %}
+            {% elif field|is_urlinput %}
+                {% include 'neobrutalist/layout/urlinput.html' %}
+            {% elif field|is_password %}
+                {% include 'neobrutalist/layout/passwordinput.html' %}
             {% else %}
                 {% neo_field field  %}
             {% endif %}
