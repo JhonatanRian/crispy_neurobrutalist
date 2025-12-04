@@ -59,86 +59,26 @@ Add Tailwind CSS to your project. You can use the CDN for quick testing:
 </head>
 ```
 
-### 4. Add Custom Neo-Brutalist Styles
+### 4. Include Neurobrutalist Styles
 
-Include the custom CSS classes for the neo-brutalist effects:
-
-```css
-/* static/css/neurobrutalist.css */
-
-/* Custom checkbox styling */
-.custom-checkbox {
-    position: relative;
-    cursor: pointer;
-}
-
-.custom-checkbox:checked {
-    background-color: black;
-}
-
-.custom-checkbox:checked::after {
-    content: "✓";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-weight: bold;
-}
-
-/* Custom radio styling */
-.custom-radio {
-    position: relative;
-    cursor: pointer;
-}
-
-.custom-radio:checked {
-    background-color: black;
-}
-
-.custom-radio:checked::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 8px;
-    height: 8px;
-    background-color: white;
-    border-radius: 50%;
-}
-
-/* Neo-brutalist shadows */
-.neo-shadow {
-    box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
-}
-
-.neo-shadow-sm {
-    box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
-}
-
-/* Button hover effect */
-.neo-button {
-    transition: all 0.1s ease;
-}
-
-.neo-button:hover {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
-}
-
-.neo-button:active {
-    transform: translate(4px, 4px);
-    box-shadow: none;
-}
-```
-
-Then include it in your template:
+The package includes custom CSS for neurobrutalist effects. Include it in your base template:
 
 ```html
 <!-- base.html -->
-<link rel="stylesheet" href="{% static 'css/neurobrutalist.css' %}">
+{% load static %}
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'crispy_neurobrutalist/css/neurobrutalist.css' %}">
+</head>
 ```
+
+The CSS file provides essential classes for:
+- ✓ **Custom checkbox/radio styling** - `.custom-checkbox`, `.custom-radio`
+- ✓ **Neo-brutalist shadows** - `.neo-shadow`, `.neo-shadow-sm`, `.neo-shadow-md`
+- ✓ **Button animations** - `.neo-button` with press effect
+- ✓ **Optional utilities** - `.neo-card`, `.neo-border`, color variants
+
+**Note:** Make sure `django.contrib.staticfiles` is in your `INSTALLED_APPS` and you've run `python manage.py collectstatic` in production.
 
 ## 🚀 Usage
 

@@ -1,6 +1,6 @@
 [project]
 name = "crispy-neurobrutalist"
-version = "0.1.0"
+version = "0.5.0"
 description = "A Django app that provides Neurobrutalist themes for django-crispy-forms."
 readme = "README.md"
 authors = [
@@ -78,6 +78,10 @@ build-backend = "hatchling.build"
 
 [tool.hatchling.build.targets.wheel]
 packages = ["src/crispy_neurobrutalist"]
+
+[tool.hatchling.build.targets.wheel.force-include]
+"src/crispy_neurobrutalist/static" = "crispy_neurobrutalist/static"
+"src/crispy_neurobrutalist/templates" = "crispy_neurobrutalist/templates"
 
 [tool.hatchling.build.targets.sdist]
 include = [

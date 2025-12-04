@@ -102,7 +102,8 @@ Add to your base template (`base.html` or similar):
     
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <link rel="stylesheet" href="{% static 'css/neurobrutalist.css' %}">
+    <!-- Include crispy-neurobrutalist CSS (automatically included with package) -->
+    <link rel="stylesheet" href="{% static 'crispy_neurobrutalist/css/neurobrutalist.css' %}">
 </head>
 <body>
     {% block content %}{% endblock %}
@@ -110,7 +111,10 @@ Add to your base template (`base.html` or similar):
 </html>
 ```
 
-**Note**: CDN is great for development but not recommended for production.
+**Note**: 
+- CDN is great for development but not recommended for production.
+- The neurobrutalist CSS is included automatically with the package installation.
+- Make sure `django.contrib.staticfiles` is in your `INSTALLED_APPS`.
 
 ### Method 2: Django-Tailwind (Recommended for Production)
 
@@ -181,90 +185,45 @@ npx tailwindcss -i ./static/src/input.css -o ./static/css/output.css --watch
 <link rel="stylesheet" href="{% static 'css/output.css' %}">
 ```
 
-## Custom Styles
+## Custom Styles (Already Included!)
 
-Create a CSS file with the required neurobrutalist styles.
+The neurobrutalist CSS styles are **automatically included** with the package installation. You don't need to create any CSS file manually!
 
-### 1. Create the CSS File
+### What's Included
 
-Create `static/css/neurobrutalist.css`:
+The package provides `crispy_neurobrutalist/css/neurobrutalist.css` with:
 
-```css
-/* Custom checkbox styling */
-.custom-checkbox {
-    position: relative;
-    cursor: pointer;
-}
+- **Custom checkbox styling** (`.custom-checkbox`) - Black checkmark on white background
+- **Custom radio styling** (`.custom-radio`) - Dot indicator when selected
+- **Neo-brutalist shadows** (`.neo-shadow`, `.neo-shadow-sm`, `.neo-shadow-md`, `.neo-shadow-lg`, `.neo-shadow-xl`)
+- **Colored shadow variants** (`.neo-shadow-blue`, `.neo-shadow-red`, `.neo-shadow-green`, `.neo-shadow-purple`)
+- **Button animations** (`.neo-button`) - Press effect on hover/active
+- **Card styles** (`.neo-card`) - Neurobrutalist container
+- **Border utilities** (`.neo-border`, `.neo-border-thick`)
+- **Background colors** (`.neo-bg-primary`, `.neo-bg-success`, `.neo-bg-warning`, `.neo-bg-danger`)
 
-.custom-checkbox:checked {
-    background-color: black;
-}
+### How to Include
 
-.custom-checkbox:checked::after {
-    content: "✓";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-weight: bold;
-    font-size: 14px;
-}
-
-/* Custom radio styling */
-.custom-radio {
-    position: relative;
-    cursor: pointer;
-}
-
-.custom-radio:checked {
-    background-color: black;
-}
-
-.custom-radio:checked::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 8px;
-    height: 8px;
-    background-color: white;
-    border-radius: 50%;
-}
-
-/* Neo-brutalist shadows */
-.neo-shadow {
-    box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
-}
-
-.neo-shadow-sm {
-    box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
-}
-
-/* Button hover effects */
-.neo-button {
-    transition: all 0.1s ease;
-}
-
-.neo-button:hover {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
-}
-
-.neo-button:active {
-    transform: translate(4px, 4px);
-    box-shadow: none;
-}
-```
-
-### 2. Include in Templates
+Simply load it in your base template (already shown in step 2):
 
 ```html
-<link rel="stylesheet" href="{% static 'css/neurobrutalist.css' %}">
+{% load static %}
+<link rel="stylesheet" href="{% static 'crispy_neurobrutalist/css/neurobrutalist.css' %}">
 ```
 
-### 3. Ensure Static Files are Configured
+**That's it!** The CSS file is distributed with the package and works with Django's static files system.
+
+### For Production
+
+Make sure to run collectstatic:
+
+```bash
+python manage.py collectstatic
+```
+
+This will copy the neurobrutalist CSS to your `STATIC_ROOT` directory.
+
+### Static Files Configuration
 
 In `settings.py`:
 
@@ -312,11 +271,12 @@ def test_view(request):
 ```django
 <!-- templates/test.html -->
 {% load crispy_forms_tags %}
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="{% static 'css/neurobrutalist.css' %}">
+    <link rel="stylesheet" href="{% static 'crispy_neurobrutalist/css/neurobrutalist.css' %}">
 </head>
 <body class="p-8 bg-gray-100">
     <div class="max-w-md mx-auto bg-white p-6 rounded-lg">
