@@ -1,8 +1,9 @@
 import re
+from typing import Any
 
 
 class CSSContainer:
-    def __init__(self, css_styles):
+    def __init__(self, css_styles: dict[str, str]) -> None:
         default_items = [
             "text",
             "number",
@@ -41,10 +42,10 @@ class CSSContainer:
                 new_classes = " ".join(current_class)
                 setattr(self, key, new_classes)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self.__dict__)
 
-    def __add__(self, other):
+    def __add__(self, other: dict[str, str]) -> "CSSContainer":
         for field, css_class in other.items():
             current_class = set(getattr(self, field).split())
             current_class.update(set(css_class.split()))
@@ -52,7 +53,7 @@ class CSSContainer:
             setattr(self, field, new_classes)
         return self
 
-    def __sub__(self, other):
+    def __sub__(self, other: dict[str, str]) -> "CSSContainer":
         for field, css_class in other.items():
             current_class = set(getattr(self, field).split())
             removed_classes = set(css_class.split())
@@ -60,8 +61,19 @@ class CSSContainer:
             setattr(self, field, new_classes)
         return self
 
-    def get_input_class(self, field):
-        widget_name = re.sub(
-            r"widget$|input$", "", field.field.widget.__class__.__name__.lower()
-        )
-        return getattr(self, widget_name, "")
+    def get_input_class(self, field: Any) -> str:
+        widget_name = re.sub(r"widget$|input$", "", field.field.widget.__class__.__name__.lower())
+        css_classes = getattr(self, widget_name, None)
+
+        if css_classes is None:
+            import warnings
+
+            warnings.warn(
+                f"Widget type '{widget_name}' (from {field.field.widget.__class__.__name__}) "
+                f"is not configured in CSSContainer. Field: {field.name}",
+                UserWarning,
+                stacklevel=2,
+            )
+            return ""
+
+        return css_classes

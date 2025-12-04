@@ -78,38 +78,52 @@ def pairwise(iterable):
 
 
 class CrispyNeuroBrutaListFieldNode(template.Node):
-    base_input = (
-        "w-full p-3 bg-white border-2 border-black rounded-lg focus:outline-none focus:ring-2 "
-        "focus:ring-blue-400 neo-shadow-sm"
+    """Template node for rendering form fields with neurobrutalist styling."""
+
+    # Base input styling used for most text-based inputs
+    BASE_INPUT_CLASSES = (
+        "w-full p-3 bg-white border-2 border-black rounded-lg "
+        "focus:outline-none focus:ring-2 focus:ring-blue-400 neo-shadow-sm"
+    )
+
+    # File input styling
+    FILE_INPUT_CLASSES = (
+        "mt-1 w-full text-sm font-semibold text-gray-500 "
+        "file:mr-4 file:py-2 file:px-4 file:rounded-lg "
+        "file:border-2 file:border-black file:neo-shadow-sm "
+        "file:font-bold file:bg-gray-200 file:text-black "
+        "hover:file:bg-gray-300"
+    )
+
+    # Split datetime input styling
+    SPLIT_DATETIME_CLASSES = (
+        "text-gray-700 bg-white focus:outline border border-gray-300 "
+        "leading-normal px-4 appearance-none rounded-lg py-2 "
+        "focus:outline-none mr-2"
     )
 
     default_styles = {
-        "text": base_input,
-        "number": base_input,
+        "text": BASE_INPUT_CLASSES,
+        "number": BASE_INPUT_CLASSES,
+        "email": BASE_INPUT_CLASSES,
+        "url": BASE_INPUT_CLASSES,
+        "password": BASE_INPUT_CLASSES,
+        "textarea": BASE_INPUT_CLASSES,
+        "date": BASE_INPUT_CLASSES,
+        "datetime": BASE_INPUT_CLASSES,
+        "time": BASE_INPUT_CLASSES,
+        "checkbox": "w-5 h-5 border-2 border-black rounded-md appearance-none custom-checkbox",
+        "file": FILE_INPUT_CLASSES,
+        "clearablefile": FILE_INPUT_CLASSES,
+        "splitdatetime": SPLIT_DATETIME_CLASSES,
         "radioselect": "",
-        "email": base_input,
-        "url": base_input,
-        "password": base_input,
         "hidden": "",
         "multiplehidden": "",
-        "file": "mt-1 w-full text-sm font-semibold text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg "
-        "file:border-2 file:border-black file:neo-shadow-sm file:font-bold file:bg-gray-200 file:text-black "
-        "hover:file:bg-gray-300",
-        "clearablefile": "mt-1 w-full text-sm font-semibold text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg "
-        "file:border-2 file:border-black file:neo-shadow-sm file:font-bold file:bg-gray-200 file:text-black "
-        "hover:file:bg-gray-300",
-        "textarea": base_input,
-        "date": base_input,
-        "datetime": base_input,
-        "time": base_input,
-        "checkbox": "w-5 h-5 border-2 border-black rounded-md appearance-none custom-checkbox",
         "select": "",
         "nullbooleanselect": "",
         "selectmultiple": "",
         "checkboxselectmultiple": "",
         "multi": "",
-        "splitdatetime": "text-gray-700 bg-white focus:outline border border-gray-300 leading-normal px-4 "
-        "appearance-none rounded-lg py-2 focus:outline-none mr-2",
         "splithiddendatetime": "",
         "selectdate": "",
         "error_border": "bg-red-100 border-red-500 border-2",
@@ -172,11 +186,7 @@ class CrispyNeuroBrutaListFieldNode(template.Node):
 
             widget.attrs["class"] = css_class
 
-            if (
-                html5_required
-                and field.field.required
-                and "required" not in widget.attrs
-            ):
+            if html5_required and field.field.required and "required" not in widget.attrs:
                 if field.field.widget.__class__.__name__ != "RadioSelect":
                     widget.attrs["required"] = "required"
 
@@ -184,13 +194,11 @@ class CrispyNeuroBrutaListFieldNode(template.Node):
                 attribute_name = template.Variable(attribute_name).resolve(context)
 
                 if attribute_name in widget.attrs:
-                    widget.attrs[attribute_name] += " " + template.Variable(
-                        attribute
-                    ).resolve(context)
-                else:
-                    widget.attrs[attribute_name] = template.Variable(attribute).resolve(
+                    widget.attrs[attribute_name] += " " + template.Variable(attribute).resolve(
                         context
                     )
+                else:
+                    widget.attrs[attribute_name] = template.Variable(attribute).resolve(context)
 
         return str(field)
 

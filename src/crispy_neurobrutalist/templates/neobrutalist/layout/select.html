@@ -1,4 +1,5 @@
-<select {% if field.widget_type == "selectmultiple" %}multiple{% endif %} name="{{ field.name }}"
+{% load neo_field %}
+<select {% if field|is_multiselect %}multiple{% endif %} name="{{ field.name }}"
         class="mt-1 w-full p-3 bg-white border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 neo-shadow-sm appearance-none" {{ field.flat_attrs|safe }}>
     {% for value, text in field.field.widget.choices %}
         <option value="{{ value }}"
