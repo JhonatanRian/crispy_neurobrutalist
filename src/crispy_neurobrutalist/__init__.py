@@ -5,7 +5,7 @@ This package provides a neurobrutalist template pack for django-crispy-forms,
 featuring bold, high-contrast styling with Tailwind CSS and custom neo-brutalist utilities.
 """
 
-__version__ = "0.6.0"
+__version__ = "0.6.2"
 __author__ = "Jhonatan Rian"
 __email__ = "jhonatanrian@zohomail.com"
 __license__ = "CC-BY-NC-4.0"

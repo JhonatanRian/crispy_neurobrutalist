@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.2] - 2026-05-25
+
+### Fixed
+- ✅ **django-select2 CSS priority** - Added `!important` flags to all Select2 CSS overrides in `neurobrutalist.css` (both reference and package files) to guarantee they always take precedence over default select2 styles regardless of stylesheet load order.
+
 ## [0.6.1] - 2026-05-25
 
 ### Fixed

@@ -181,15 +181,15 @@ class CrispyNeuroBrutaListFieldNode(template.Node):
         "selectdate": "",
         "error_border": "bg-red-100 border-red-500 border-2",
         # django-select2 widget types
-        "select2": "",
-        "select2multiple": "",
-        "select2tag": "",
-        "heavyselect2": "",
-        "heavyselect2multiple": "",
-        "heavyselect2tag": "",
-        "modelselect2": "",
-        "modelselect2multiple": "",
-        "modelselect2tag": "",
+        "select2": "w-full",
+        "select2multiple": "w-full",
+        "select2tag": "w-full",
+        "heavyselect2": "w-full",
+        "heavyselect2multiple": "w-full",
+        "heavyselect2tag": "w-full",
+        "modelselect2": "w-full",
+        "modelselect2multiple": "w-full",
+        "modelselect2tag": "w-full",
     }
 
     default_container = CSSContainer(default_styles)

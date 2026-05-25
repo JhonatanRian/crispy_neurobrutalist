@@ -502,7 +502,7 @@ class TestSelect2DefaultStyles:
             assert widget_type in CrispyNeuroBrutaListFieldNode.default_styles, (
                 f"Missing {widget_type} in default_styles"
             )
-            assert CrispyNeuroBrutaListFieldNode.default_styles[widget_type] == ""
+            assert CrispyNeuroBrutaListFieldNode.default_styles[widget_type] == "w-full"
 
     def test_default_container_has_select2_attrs(self):
         """Test that the default_container CSSContainer has Select2 attributes."""
