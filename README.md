@@ -78,6 +78,25 @@ The CSS file provides essential classes for:
 - ✓ **Button animations** - `.neo-button` with press effect
 - ✓ **Optional utilities** - `.neo-card`, `.neo-border`, color variants
 
+#### ⚠️ Integration with Third-Party Widgets (e.g., django-select2)
+
+If your form uses widgets that load their own assets (like `django-select2` via `{{ form.media.css }}`), make sure that `neurobrutalist.css` is loaded in your base template **before** the dynamic media CSS block:
+
+```html
+<!-- base.html -->
+<head>
+    <!-- 1. Include neurobrutalist CSS -->
+    <link rel="stylesheet" href="{% static 'crispy_neurobrutalist/css/neurobrutalist.css' %}">
+    
+    <!-- 2. Block for dynamic forms media -->
+    {% block extra_css %}
+        <!-- {{ form.media.css }} will be rendered here -->
+    {% endblock %}
+</head>
+```
+
+With the `!important` flags implemented in `v0.6.2`, the neurobrutalist styles will correctly override the default select2 styles.
+
 **Note:** Make sure `django.contrib.staticfiles` is in your `INSTALLED_APPS` and you've run `python manage.py collectstatic` in production.
 
 ## 🚀 Usage
