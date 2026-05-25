@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.1] - 2026-05-25
+
+### Fixed
+- ✅ **Pre-populated selection matching** - Refactored `select.html` and `multiselect.html` templates to use Django's native `field.subwidgets` API. This fixes a critical bug where selected options in single-select and multi-select fields were not marked as `selected` on initial load for bound forms / pre-filled data.
+- ✅ Added integration tests verifying that selected options are correctly rendered with the `selected` attribute.
+
+## [0.6.0] - 2026-05-25
+
+### Added
+- ✅ **django-select2 Support** - Added complete support and neobrutalist styling overrides for the popular `django-select2` package widgets.
+- ✅ Custom layout style overrides for Select2 main single and multiple selection containers, clear buttons, search inputs, active focus/open states, dropdown option menus, and dynamic multi-select tags/pills.
+- ✅ New template filter `is_select2` in `neo_field.py` with graceful handling when `django-select2` is not installed in the project.
+- ✅ Expanded test coverage with dedicated test suites for the `is_select2` filter, widget types initialization, and style customization classes in `CSSContainer`.
+
+
 ## [0.5.0] - 2025-12-04
 
 ### Added

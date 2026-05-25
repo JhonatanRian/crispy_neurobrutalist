@@ -519,3 +519,38 @@ class TestSelect2DefaultStyles:
         for widget_type in select2_types:
             assert hasattr(container, widget_type), f"Container missing: {widget_type}"
 
+
+class TestSelectAndMultiSelectPrepopulation:
+    """Test suite for verifying that pre-selected options render selected in select/multiselect templates."""
+
+    def test_single_select_prepopulation(self):
+        """Test that single select fields render selected attribute on correct option."""
+        from django import forms
+        from django.template import Context, Template
+
+        class SingleSelectForm(forms.Form):
+            choice = forms.ChoiceField(choices=[("a", "A"), ("b", "B")])
+
+        form = SingleSelectForm(initial={"choice": "b"})
+        template = Template("{% load crispy_forms_tags %}{{ form.choice|as_crispy_field }}")
+        html = template.render(Context({"form": form}))
+
+        assert "value=\"a\"" in html
+        assert "selected>B</option>" in html
+
+    def test_multiple_select_prepopulation(self):
+        """Test that multi select fields render selected attribute on all correct options."""
+        from django import forms
+        from django.template import Context, Template
+
+        class MultiSelectForm(forms.Form):
+            choices = forms.MultipleChoiceField(choices=[("a", "A"), ("b", "B")])
+
+        form = MultiSelectForm(initial={"choices": ["a", "b"]})
+        template = Template("{% load crispy_forms_tags %}{{ form.choices|as_crispy_field }}")
+        html = template.render(Context({"form": form}))
+
+        assert "selected>A</option>" in html
+        assert "selected>B</option>" in html
+
+
