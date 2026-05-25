@@ -235,7 +235,7 @@ wheels = [
 
 [[package]]
 name = "crispy-neurobrutalist"
-version = "0.1.0"
+version = "0.5.0"
 source = { editable = "." }
 dependencies = [
     { name = "django" },
@@ -262,6 +262,8 @@ docs = [
 [package.dev-dependencies]
 dev = [
     { name = "pytest" },
+    { name = "pytest-cov" },
+    { name = "pytest-django" },
 ]
 
 [package.metadata]
@@ -283,7 +285,11 @@ requires-dist = [
 provides-extras = ["dev", "docs"]
 
 [package.metadata.requires-dev]
-dev = [{ name = "pytest", specifier = ">=9.0.1" }]
+dev = [
+    { name = "pytest", specifier = ">=9.0.1" },
+    { name = "pytest-cov", specifier = ">=7.0.0" },
+    { name = "pytest-django", specifier = ">=4.11.1" },
+]
 
 [[package]]
 name = "distlib"

@@ -56,6 +56,17 @@ def is_multivalue(field):
 
 
 @register.filter
+def is_select2(field):
+    """Check if field uses a django-select2 widget."""
+    try:
+        from django_select2.forms import Select2Mixin
+
+        return isinstance(field.field.widget, Select2Mixin)
+    except ImportError:
+        return False
+
+
+@register.filter
 def is_dateinput(field):
     """Check if field is a DateInput widget."""
     return isinstance(field.field.widget, forms.DateInput)
@@ -169,6 +180,16 @@ class CrispyNeuroBrutaListFieldNode(template.Node):
         "splithiddendatetime": "",
         "selectdate": "",
         "error_border": "bg-red-100 border-red-500 border-2",
+        # django-select2 widget types
+        "select2": "",
+        "select2multiple": "",
+        "select2tag": "",
+        "heavyselect2": "",
+        "heavyselect2multiple": "",
+        "heavyselect2tag": "",
+        "modelselect2": "",
+        "modelselect2multiple": "",
+        "modelselect2tag": "",
     }
 
     default_container = CSSContainer(default_styles)

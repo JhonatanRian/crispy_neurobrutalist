@@ -24,6 +24,8 @@
                 {% include 'neobrutalist/layout/checkboxselectmultiple.html' %}
             {% elif field|is_radioselect %}
                 {% include 'neobrutalist/layout/radioselect.html' %}
+            {% elif field|is_select2 %}
+                {% neo_field field %}
             {% elif field|is_multiselect %}
                 {% include 'neobrutalist/layout/multiselect.html' %}
             {% elif field|is_select %}

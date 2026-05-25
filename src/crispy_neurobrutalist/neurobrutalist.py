@@ -29,6 +29,16 @@ class CSSContainer:
             "splithiddendatetime",
             "selectdate",
             "error_border",
+            # django-select2 widget types
+            "select2",
+            "select2multiple",
+            "select2tag",
+            "heavyselect2",
+            "heavyselect2multiple",
+            "heavyselect2tag",
+            "modelselect2",
+            "modelselect2multiple",
+            "modelselect2tag",
         ]
 
         base = css_styles.get("base", "")

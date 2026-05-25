@@ -256,3 +256,266 @@ class TestCSSContainer:
         assert text_classes.count("border-2") == 1
         assert "rounded" in text_classes
         assert "focus:ring-2" in text_classes
+
+
+class TestSelect2Support:
+    """Test suite for django-select2 support in CSSContainer."""
+
+    SELECT2_WIDGET_TYPES = [
+        "select2",
+        "select2multiple",
+        "select2tag",
+        "heavyselect2",
+        "heavyselect2multiple",
+        "heavyselect2tag",
+        "modelselect2",
+        "modelselect2multiple",
+        "modelselect2tag",
+    ]
+
+    def test_select2_widget_types_initialized_with_base(self):
+        """Test that all Select2 widget types are initialized when using base style."""
+        css = CSSContainer({"base": "test-class"})
+
+        for widget_type in self.SELECT2_WIDGET_TYPES:
+            assert hasattr(css, widget_type), f"Missing widget type: {widget_type}"
+            assert css.__dict__[widget_type] == "test-class"
+
+    def test_select2_widget_types_initialized_empty(self):
+        """Test that Select2 widget types exist with empty base."""
+        css = CSSContainer({})
+
+        for widget_type in self.SELECT2_WIDGET_TYPES:
+            assert hasattr(css, widget_type), f"Missing widget type: {widget_type}"
+            assert css.__dict__[widget_type] == ""
+
+    def test_select2_specific_styles_override(self):
+        """Test that specific Select2 styles merge with base."""
+        css = CSSContainer({
+            "base": "border-2",
+            "select2": "neo-shadow-sm",
+            "select2multiple": "min-h-[52px]",
+        })
+
+        assert "border-2" in css.select2
+        assert "neo-shadow-sm" in css.select2
+        assert "border-2" in css.select2multiple
+        assert "min-h-[52px]" in css.select2multiple
+
+    def test_select2_add_operator(self):
+        """Test adding classes to Select2 widget types."""
+        css = CSSContainer({"select2": "border-2"})
+
+        css += {"select2": "rounded-lg"}
+
+        assert "border-2" in css.select2
+        assert "rounded-lg" in css.select2
+
+    def test_select2_subtract_operator(self):
+        """Test removing classes from Select2 widget types."""
+        css = CSSContainer({"select2": "border-2 rounded-lg neo-shadow-sm"})
+
+        css -= {"select2": "neo-shadow-sm"}
+
+        assert "border-2" in css.select2
+        assert "rounded-lg" in css.select2
+        assert "neo-shadow-sm" not in css.select2
+
+    def test_get_input_class_for_mocked_select2_widget(self):
+        """Test get_input_class resolves Select2 widget names correctly."""
+
+        class FakeSelect2Widget(forms.Select):
+            """Mock widget class simulating Select2Widget naming."""
+            pass
+
+        # Rename to match django-select2's class name pattern
+        FakeSelect2Widget.__name__ = "Select2Widget"
+
+        class TestForm(forms.Form):
+            choice = forms.ChoiceField(
+                choices=[("a", "A"), ("b", "B")],
+                widget=FakeSelect2Widget(),
+            )
+
+        form = TestForm()
+        field = form["choice"]
+
+        css = CSSContainer({"select2": "neo-shadow-sm border-2"})
+        result = css.get_input_class(field)
+
+        assert set(result.split()) == {"neo-shadow-sm", "border-2"}
+
+    def test_get_input_class_for_mocked_select2_multiple_widget(self):
+        """Test get_input_class resolves Select2MultipleWidget correctly."""
+
+        class FakeSelect2MultipleWidget(forms.SelectMultiple):
+            pass
+
+        FakeSelect2MultipleWidget.__name__ = "Select2MultipleWidget"
+
+        class TestForm(forms.Form):
+            choices = forms.MultipleChoiceField(
+                choices=[("a", "A"), ("b", "B")],
+                widget=FakeSelect2MultipleWidget(),
+            )
+
+        form = TestForm()
+        field = form["choices"]
+
+        css = CSSContainer({"select2multiple": "border-2 min-h-[52px]"})
+        result = css.get_input_class(field)
+
+        assert set(result.split()) == {"border-2", "min-h-[52px]"}
+
+    def test_get_input_class_for_mocked_heavy_select2_widget(self):
+        """Test get_input_class resolves HeavySelect2Widget correctly."""
+
+        class FakeHeavySelect2Widget(forms.Select):
+            pass
+
+        FakeHeavySelect2Widget.__name__ = "HeavySelect2Widget"
+
+        class TestForm(forms.Form):
+            choice = forms.ChoiceField(
+                choices=[("a", "A")],
+                widget=FakeHeavySelect2Widget(),
+            )
+
+        form = TestForm()
+        field = form["choice"]
+
+        css = CSSContainer({"heavyselect2": "neo-shadow-sm"})
+        result = css.get_input_class(field)
+
+        assert "neo-shadow-sm" in result
+
+    def test_get_input_class_for_mocked_model_select2_widget(self):
+        """Test get_input_class resolves ModelSelect2Widget correctly."""
+
+        class FakeModelSelect2Widget(forms.Select):
+            pass
+
+        FakeModelSelect2Widget.__name__ = "ModelSelect2Widget"
+
+        class TestForm(forms.Form):
+            choice = forms.ChoiceField(
+                choices=[("a", "A")],
+                widget=FakeModelSelect2Widget(),
+            )
+
+        form = TestForm()
+        field = form["choice"]
+
+        css = CSSContainer({"modelselect2": "border-2 rounded-lg"})
+        result = css.get_input_class(field)
+
+        assert set(result.split()) == {"border-2", "rounded-lg"}
+
+    def test_all_widget_types_include_select2(self):
+        """Test that the full default_items list includes all Select2 types."""
+        css = CSSContainer({"base": "x"})
+
+        all_types = [
+            "text", "number", "email", "url", "password", "hidden",
+            "multiplehidden", "file", "clearablefile", "textarea",
+            "date", "datetime", "time", "checkbox", "select",
+            "nullbooleanselect", "selectmultiple", "radioselect",
+            "checkboxselectmultiple", "multi", "splitdatetime",
+            "splithiddendatetime", "selectdate", "error_border",
+        ] + self.SELECT2_WIDGET_TYPES
+
+        for widget_type in all_types:
+            assert hasattr(css, widget_type), f"Missing: {widget_type}"
+
+
+class TestSelect2Filter:
+    """Test suite for the is_select2 template filter."""
+
+    def test_is_select2_returns_false_for_regular_select(self):
+        """Test that is_select2 returns False for standard Django Select widgets."""
+        from crispy_neurobrutalist.templatetags.neo_field import is_select2
+
+        class TestForm(forms.Form):
+            choice = forms.ChoiceField(choices=[("a", "A"), ("b", "B")])
+
+        form = TestForm()
+        field = form["choice"]
+
+        assert is_select2(field) is False
+
+    def test_is_select2_returns_false_for_regular_multiselect(self):
+        """Test that is_select2 returns False for standard SelectMultiple."""
+        from crispy_neurobrutalist.templatetags.neo_field import is_select2
+
+        class TestForm(forms.Form):
+            choices = forms.MultipleChoiceField(choices=[("a", "A")])
+
+        form = TestForm()
+        field = form["choices"]
+
+        assert is_select2(field) is False
+
+    def test_is_select2_returns_false_for_text_input(self):
+        """Test that is_select2 returns False for TextInput."""
+        from crispy_neurobrutalist.templatetags.neo_field import is_select2
+
+        class TestForm(forms.Form):
+            name = forms.CharField()
+
+        form = TestForm()
+        field = form["name"]
+
+        assert is_select2(field) is False
+
+    def test_is_select2_graceful_without_django_select2(self):
+        """Test that is_select2 doesn't crash when django-select2 is not installed."""
+        from unittest.mock import patch
+
+        from crispy_neurobrutalist.templatetags.neo_field import is_select2
+
+        class TestForm(forms.Form):
+            choice = forms.ChoiceField(choices=[("a", "A")])
+
+        form = TestForm()
+        field = form["choice"]
+
+        # Simulate django_select2 not being installed
+        with patch.dict("sys.modules", {"django_select2": None, "django_select2.forms": None}):
+            result = is_select2(field)
+            assert result is False
+
+
+class TestSelect2DefaultStyles:
+    """Test suite for Select2 widget types in CrispyNeuroBrutaListFieldNode default_styles."""
+
+    def test_select2_in_default_styles(self):
+        """Test that Select2 widget types are in the default_styles dict."""
+        from crispy_neurobrutalist.templatetags.neo_field import CrispyNeuroBrutaListFieldNode
+
+        select2_types = [
+            "select2", "select2multiple", "select2tag",
+            "heavyselect2", "heavyselect2multiple", "heavyselect2tag",
+            "modelselect2", "modelselect2multiple", "modelselect2tag",
+        ]
+
+        for widget_type in select2_types:
+            assert widget_type in CrispyNeuroBrutaListFieldNode.default_styles, (
+                f"Missing {widget_type} in default_styles"
+            )
+            assert CrispyNeuroBrutaListFieldNode.default_styles[widget_type] == ""
+
+    def test_default_container_has_select2_attrs(self):
+        """Test that the default_container CSSContainer has Select2 attributes."""
+        from crispy_neurobrutalist.templatetags.neo_field import CrispyNeuroBrutaListFieldNode
+
+        container = CrispyNeuroBrutaListFieldNode.default_container
+
+        select2_types = [
+            "select2", "select2multiple", "select2tag",
+            "heavyselect2", "heavyselect2multiple", "heavyselect2tag",
+            "modelselect2", "modelselect2multiple", "modelselect2tag",
+        ]
+
+        for widget_type in select2_types:
+            assert hasattr(container, widget_type), f"Container missing: {widget_type}"
+
