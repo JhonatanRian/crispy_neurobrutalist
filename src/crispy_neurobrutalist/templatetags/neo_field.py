@@ -228,6 +228,12 @@ class CrispyNeuroBrutaListFieldNode(template.Node):
         converters = {}
         converters.update(getattr(settings, "CRISPY_CLASS_CONVERTERS", {}))
 
+        restorers = []
+        for widget in widgets:
+            if isinstance(widget, forms.ClearableFileInput):
+                restorers.append((widget, widget.template_name))
+                widget.template_name = "django/forms/widgets/file.html"
+
         for widget, attr in zip(widgets, attrs):
             class_name = widget.__class__.__name__.lower()
             class_name = converters.get(class_name, class_name)
@@ -263,7 +269,11 @@ class CrispyNeuroBrutaListFieldNode(template.Node):
                 else:
                     widget.attrs[attribute_name] = template.Variable(attribute).resolve(context)
 
-        return str(field)
+        rendered_field = str(field)
+        for widget, original_template in restorers:
+            widget.template_name = original_template
+
+        return rendered_field
 
 
 @register.tag(name="neo_field")

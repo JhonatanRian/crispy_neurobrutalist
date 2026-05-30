@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.3] - 2026-05-30
+
+### Fixed
+- ✅ **FileInput/ClearableFileInput rendering and double elements bug** - Added the missing `fileinput.html` layout template for simple file inputs. Overrode the `template_name` of `ClearableFileInput` to use Django's standard `file.html` dynamically during rendering, preventing the unstyled "Currently/Clear" block from double rendering alongside our custom Neobrutalist layouts.
+- ✅ Added comprehensive integration tests verifying file input and clearable file input layout rendering in bound/unbound forms.
+
 ## [0.6.2] - 2026-05-25
 
 ### Fixed

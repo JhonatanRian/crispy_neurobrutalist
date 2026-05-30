@@ -554,3 +554,105 @@ class TestSelectAndMultiSelectPrepopulation:
         assert "selected>B</option>" in html
 
 
+class TestFileInputAndClearableFileInputRendering:
+    """Test suite for verifying the rendering of FileInput and ClearableFileInput fields."""
+
+    def test_file_input_rendering(self):
+        """Test that a standard FileInput is rendered and styled with FILE_INPUT_CLASSES."""
+        import re
+        from django import forms
+        from django.template import Context, Template
+
+        class FileForm(forms.Form):
+            file_field = forms.FileField(widget=forms.FileInput)
+
+        form = FileForm()
+        template = Template("{% load crispy_forms_tags %}{{ form.file_field|as_crispy_field }}")
+        html = template.render(Context({"form": form}))
+
+        # Verify that it renders the file input element
+        assert 'type="file"' in html
+        
+        # Verify that the Neobrutalist classes are applied correctly (order-independent)
+        class_match = re.search(r'type="file"[^>]*class="([^"]+)"', html)
+        assert class_match is not None
+        classes = set(class_match.group(1).split())
+        assert "fileinput" in classes
+        assert "mt-1" in classes
+        assert "w-full" in classes
+        assert "text-sm" in classes
+        assert "font-semibold" in classes
+        assert "file:border-2" in classes
+        assert "file:border-black" in classes
+
+    def test_clearable_file_input_without_initial_value(self):
+        """Test that ClearableFileInput without initial value renders file input nicely."""
+        import re
+        from django import forms
+        from django.template import Context, Template
+
+        class FileForm(forms.Form):
+            file_field = forms.FileField()
+
+        form = FileForm()
+        template = Template("{% load crispy_forms_tags %}{{ form.file_field|as_crispy_field }}")
+        html = template.render(Context({"form": form}))
+
+        # Verify it renders simple file input since there is no initial file
+        assert 'type="file"' in html
+        assert 'Currently:' not in html
+        assert 'Clear' not in html
+
+        class_match = re.search(r'type="file"[^>]*class="([^"]+)"', html)
+        assert class_match is not None
+        classes = set(class_match.group(1).split())
+        assert "clearablefileinput" in classes
+        assert "mt-1" in classes
+        assert "w-full" in classes
+        assert "text-sm" in classes
+
+    def test_clearable_file_input_with_initial_value(self):
+        """Test that ClearableFileInput with initial value renders styled elements without double-rendering."""
+        import re
+        from django import forms
+        from django.template import Context, Template
+
+        class FileForm(forms.Form):
+            file_field = forms.FileField()
+
+        # Create a mock file with name and url attributes
+        class MockFile:
+            def __init__(self, name, url):
+                self.name = name
+                self.url = url
+            def __str__(self):
+                return self.name
+
+        mock_file = MockFile("test_file.txt", "/media/test_file.txt")
+        form = FileForm(initial={"file_field": mock_file})
+        template = Template("{% load crispy_forms_tags %}{{ form.file_field|as_crispy_field }}")
+        html = template.render(Context({"form": form}))
+
+        # Verify that the Neobrutalist clearable file layout is rendered
+        assert 'Currently:' in html
+        assert 'test_file.txt' in html
+        assert 'type="checkbox"' in html
+        assert 'custom-checkbox' in html
+
+        # Verify that the file input element itself is styled
+        assert 'type="file"' in html
+        class_match = re.search(r'type="file"[^>]*class="([^"]+)"', html)
+        assert class_match is not None
+        classes = set(class_match.group(1).split())
+        assert "clearablefileinput" in classes
+        assert "mt-1" in classes
+        assert "w-full" in classes
+        assert "text-sm" in classes
+
+        # Verify that Django's default unstyled template is suppressed and not double-rendered
+        # In default Django clearable_file_input, it outputs "<br>\nChange:\n" or similar translation
+        assert '<br>' not in html
+        assert 'Change:' not in html
+
+
+
