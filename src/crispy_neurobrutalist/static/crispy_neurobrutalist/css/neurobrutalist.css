@@ -264,6 +264,10 @@
    django-select2 / Select2 Theming
    =================================== */
 
+.select2-container {
+    width: 100% !important;
+}
+
 /* --- Main Container --- */
 .select2-container--default .select2-selection--single {
     border: 2px solid black !important;

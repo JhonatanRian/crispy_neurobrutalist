@@ -1,6 +1,6 @@
 [project]
 name = "crispy-neurobrutalist"
-version = "0.6.3"
+version = "0.6.4"
 description = "A Django app that provides Neurobrutalist themes for django-crispy-forms."
 readme = "README.md"
 authors = [
